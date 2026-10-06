@@ -1,2 +1,6 @@
 [tools]
 python = "3.14"
+
+[tasks.coverage]
+description = "unit test coverage 확인"
+run = "uv run pytest tests/unit --cov=localinteractiveairesponder --cov-report=term-missing --cov-fail-under=80"
