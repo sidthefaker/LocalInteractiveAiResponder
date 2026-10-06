@@ -45,17 +45,20 @@ def live_server() -> Iterator[str]:
     server_socket.close()
 
 
-def test_echo_page_streams_five_ordered_chunks_over_http(live_server: str) -> None:
+def test_chat_page_uses_response_provider_and_streams_five_chunks(live_server: str) -> None:
     with httpx.Client(base_url=live_server, timeout=10) as client:
         page = client.get("/")
         assert page.status_code == 200
-        assert 'hx-post="/echo"' in page.text
-        assert 'hx-target="#echo-stream"' in page.text
+        assert 'hx-post="/chat"' in page.text
+        assert 'hx-target="#chat-messages"' in page.text
         assert "htmx-ext-sse" in page.text
 
-        start = client.post("/echo", data={"message": "hello <world>"})
+        assert client.post("/echo", data={"message": "hello"}).status_code == 404
+
+        start = client.post("/chat", data={"message": "hello <world>"})
 
         assert start.status_code == 200
+        assert "hello &lt;world&gt;" in start.text
         assert 'sse-swap="chunk"' in start.text
         assert 'hx-swap="beforeend"' in start.text
         stream_url = extract_stream_url(start.text)
@@ -82,9 +85,9 @@ def test_echo_page_streams_five_ordered_chunks_over_http(live_server: str) -> No
         assert event_names == ["chunk"] * 5 + ["complete"]
 
 
-def test_echo_stream_preserves_newlines_and_escapes_html(live_server: str) -> None:
+def test_chat_stream_preserves_newlines_and_escapes_html(live_server: str) -> None:
     with httpx.Client(base_url=live_server, timeout=10) as client:
-        start = client.post("/echo", data={"message": "first\n<script>alert(1)</script>"})
+        start = client.post("/chat", data={"message": "first\n<script>alert(1)</script>"})
         stream_url = extract_stream_url(start.text)
 
         with client.stream("GET", stream_url) as response:

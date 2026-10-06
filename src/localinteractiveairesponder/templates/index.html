@@ -10,20 +10,22 @@
       body { font-family: system-ui, sans-serif; margin: 2rem auto; max-width: 48rem; padding: 0 1rem; }
       textarea { box-sizing: border-box; min-height: 7rem; width: 100%; }
       button { margin-top: .5rem; padding: .5rem 1rem; }
-      #echo-stream { border: 1px solid #bbb; margin-top: 1rem; min-height: 8rem; padding: 1rem; }
+      #chat-messages { border: 1px solid #bbb; margin-top: 1rem; min-height: 8rem; padding: 1rem; }
+      .chat-turn { border-bottom: 1px solid #ddd; padding: .5rem 0; }
+      .user-message { font-weight: 600; white-space: pre-wrap; }
       .echo-line { white-space: pre-wrap; }
     </style>
   </head>
   <body>
     <main>
-      <h1>로컬 AI 에코 스트리밍 테스트</h1>
-      <p>입력한 문구를 다섯 번 반복해, 각 줄을 순서대로 표시합니다.</p>
-      <form hx-post="/echo" hx-target="#echo-stream" hx-swap="innerHTML">
+      <h1>로컬 AI 채팅</h1>
+      <p>현재는 응답 인터페이스를 확인하기 위해 입력 문구를 에코합니다.</p>
+      <form hx-post="/chat" hx-target="#chat-messages" hx-swap="beforeend">
         <label for="message">메시지</label>
         <textarea id="message" name="message" maxlength="2000" required></textarea>
-        <button type="submit">에코 실행</button>
+        <button type="submit">보내기</button>
       </form>
-      <section id="echo-stream" aria-live="polite">응답이 여기에 표시됩니다.</section>
+      <section id="chat-messages" aria-live="polite">대화를 시작해보세요.</section>
     </main>
   </body>
 </html>

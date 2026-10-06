@@ -1,0 +1,6 @@
+<article class="chat-turn">
+  <p class="user-message">{{ message }}</p>
+  <div hx-ext="sse" sse-connect="{{ stream_url }}" sse-close="complete">
+    <div class="assistant-message" sse-swap="chunk" hx-swap="beforeend"></div>
+  </div>
+</article>

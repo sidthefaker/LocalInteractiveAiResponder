@@ -7,6 +7,8 @@ from fastapi import FastAPI, Form, Request
 from fastapi.responses import HTMLResponse, StreamingResponse
 from fastapi.templating import Jinja2Templates
 
+from localinteractiveairesponder.response_provider import request_response
+
 app = FastAPI(title="Local Interactive AI Responder")
 templates = Jinja2Templates(directory=str(Path(__file__).parent / "templates"))
 ECHO_REPEAT_COUNT = 5
@@ -18,24 +20,25 @@ async def home(request: Request) -> HTMLResponse:
     return templates.TemplateResponse(request, "index.html")
 
 
-@app.post("/echo", response_class=HTMLResponse)
-async def start_echo(
+@app.post("/chat", response_class=HTMLResponse)
+async def start_chat(
     request: Request,
     message: str = Form(min_length=1, max_length=2000),
 ) -> HTMLResponse:
-    stream_url = f"/echo/stream?message={quote(message, safe='')}"
+    stream_url = f"/chat/stream?message={quote(message, safe='')}"
     return templates.TemplateResponse(
         request,
-        "echo_stream.html",
-        {"stream_url": stream_url},
+        "chat_stream.html",
+        {"message": message, "stream_url": stream_url},
     )
 
 
-@app.get("/echo/stream")
-async def echo_stream(message: str) -> StreamingResponse:
+@app.get("/chat/stream")
+async def chat_stream(message: str) -> StreamingResponse:
     async def events():
+        response = await request_response(message)
         escaped_message = (
-            html.escape(message)
+            html.escape(response)
             .replace("\r\n", "\n")
             .replace("\r", "\n")
             .replace("\n", "&#10;")
