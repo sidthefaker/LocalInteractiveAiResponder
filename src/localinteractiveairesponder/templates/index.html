@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Local Interactive AI Responder</title>
+    <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.11/dist/htmx.min.js" integrity="sha384-2OatzQy1H+Zd/IIrjr1TcuDGqLXeHhbooAyJY1KdQMKnr4LZ22k31GBLdYKHmVjg" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/htmx-ext-sse@2.2.4" integrity="sha384-A986SAtodyH8eg8x8irJnYUk7i9inVQqYigD6qZ9evobksGNIXfeFvDwLSHcp31N" crossorigin="anonymous"></script>
+    <style>
+      body { font-family: system-ui, sans-serif; margin: 2rem auto; max-width: 48rem; padding: 0 1rem; }
+      textarea { box-sizing: border-box; min-height: 7rem; width: 100%; }
+      button { margin-top: .5rem; padding: .5rem 1rem; }
+      #echo-stream { border: 1px solid #bbb; margin-top: 1rem; min-height: 8rem; padding: 1rem; }
+      .echo-line { white-space: pre-wrap; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>로컬 AI 에코 스트리밍 테스트</h1>
+      <p>입력한 문구를 다섯 번 반복해, 각 줄을 순서대로 표시합니다.</p>
+      <form hx-post="/echo" hx-target="#echo-stream" hx-swap="innerHTML">
+        <label for="message">메시지</label>
+        <textarea id="message" name="message" maxlength="2000" required></textarea>
+        <button type="submit">에코 실행</button>
+      </form>
+      <section id="echo-stream" aria-live="polite">응답이 여기에 표시됩니다.</section>
+    </main>
+  </body>
+</html>

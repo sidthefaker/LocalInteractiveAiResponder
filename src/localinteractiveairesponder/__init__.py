@@ -1,2 +1,4 @@
 def main() -> None:
-    print("Hello from localinteractiveairesponder!")
+    import uvicorn
+
+    uvicorn.run("localinteractiveairesponder.app:app", host="127.0.0.1", port=8000)
