@@ -31,6 +31,10 @@ uv run localinteractiveairesponder
 
 브라우저에서 `http://127.0.0.1:8000`을 열어 에코 스트리밍을 확인합니다.
 
+## 테스트와 coverage
+
+통합 테스트는 `uv run pytest tests/integration`으로 실행합니다. Unit test coverage는 `uv run pytest tests/unit --cov=localinteractiveairesponder --cov-report=term-missing --cov-fail-under=80`으로 확인합니다. Coverage는 `tests/unit`만 대상으로 하므로 통합 테스트는 계산에서 제외됩니다. PR에서 unit test coverage가 80% 미만이면 필수 GitHub 체크가 실패합니다.
+
 ## 개발 방향
 
 - 로컬 LLM 런타임(Ollama 등)은 교체할 수 있도록 호출 코드를 분리합니다.

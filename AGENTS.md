@@ -6,6 +6,7 @@
 
 - 새 unit test를 작성하지 않는다. 사람이 작성한 기존 unit test는 실행·검토할 수 있다.
 - 기존 unit test의 coverage를 측정하고, coverage 결과에는 integration test의 실행을 포함하지 않는다. unit test와 integration test를 명확히 구분할 수 있도록 테스트 분류를 확인한다. 분류가 불명확하면 coverage 수치를 단정하지 말고 그 한계를 보고한다.
+- Unit test statement coverage는 80% 이상이어야 한다. GitHub Actions의 `unit-coverage` 체크가 이 기준을 강제하며, integration test는 coverage 계산 대상에서 제외한다.
 - 테스트가 부족하거나 검증되지 않은 동작을 찾아서 보고한다. 발견한 공백을 AI가 unit test로 채우지 않는다.
 - 사용자 관점의 주요 흐름과 컴포넌트 간 동작을 검증하는 integration test를 빠짐없이 작성한다. 변경 범위와 관련된 오류·경계 조건도 고려한다.
 - 실행한 테스트와 실행하지 못한 테스트, coverage 범위 및 발견한 공백을 작업 결과에 명시한다.
